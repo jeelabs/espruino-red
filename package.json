@@ -1,0 +1,14 @@
+{
+    "name"         : "espruino-red",
+    "version"      : "0.0.1",
+    "description"  : "Nodes that run directly on a microcontroller with Espruino",
+    "dependencies": {
+    },
+    "keywords": [ "node-red" ],
+    "xxnode-red"     : {
+        "nodes": {
+            "e-red function": "e-red/func.js",
+            "e-red transponder": "e-red/transponder.js"
+        }
+    }
+}

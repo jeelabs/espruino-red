@@ -1,0 +1,66 @@
+<!--
+  Copyright 2016 Thorsten von Eicken
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!-- MQTT Queue                                                              -->
+<!-- This creates and configures the onscreen elements of the node           -->
+
+<!-- First, the content of the edit dialog is defined.                       -->
+
+<script type="text/x-red" data-template-name="mqtt queue">
+    <div class="form-row">
+        <label for="node-input-broker"><i class="fa fa-globe"></i> <span data-i18n="mqtt.label.broker"></span></label>
+        <input type="text" id="node-input-broker">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+
+<!-- Next, some simple help text is provided for the node.                   -->
+<script type="text/x-red" data-help-name="mqtt queue">
+<p>The MQTT queue node queues messages that have <i>retain=true</i> if the MQTT
+broker is disconnected and it sends those messages as soon as the broker
+is connected. This functionality is necessary in order to ensure that
+retain messages that are used for configuration of e-red boards actually
+make it to the broker, particularly when a flow is deployed and the broker
+may not yet be connected.</p>
+<p>This functionality should really be implemented in the MQTT node itself
+but that requires modification to the node-red core.</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('mqtt queue',{
+        category: 'function',      // the palette category
+        defaults: {             // defines the editable properties of the node
+            name: {value:""},   //  along with default values.
+            broker: {type:"mqtt-broker", required:true}
+        },
+        color:    '#d8bfd8',
+        inputs:1,
+        outputs:1,
+        // set the icon (held in icons dir below where you save the node)
+        icon: "bridge.png",
+        label: function() {     // sets the default label contents
+            return this.name||this.topic||"mqtt";
+        },
+        labelStyle: function() { // sets the class to apply to the label
+            return this.name?"node_label_italic":"";
+        }
+    });
+</script>

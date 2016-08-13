@@ -1,0 +1,83 @@
+<!--
+  Copyright 2016 Thorsten von Eicken
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!-- Espruino-red function                                                   -->
+<!-- This creates and configures the onscreen elements of the node           -->
+
+<!-- First, the content of the edit dialog is defined.                       -->
+
+<script type="text/x-red" data-template-name="e-red function">
+   <!-- data-template-name identifies the node type this is for              -->
+
+   <!-- Each of the following divs creates a field in the edit dialog.       -->
+   <!-- Generally, there should be an input for each property of the node.   -->
+   <!-- The for and id attributes identify the corresponding property        -->
+   <!-- (with the 'node-input-' prefix).                                     -->
+   <!-- The available icon classes are defined Font Awesome Icons (FA Icons) -->
+
+    <!-- ID of embedded board -->
+    <div class="form-row">
+        <label for="node-input-board"><i class="fa fa-tasks"></i> Board</label>
+        <input type="text" id="node-input-board" placeholder="Board name">
+    </div>
+
+    <!-- JavaScript Function code -->
+    <div class="form-row">
+        <label for="node-input-code"><i class="fa fa-tasks"></i> Javascript Function Body</label>
+        <input type="text" id="node-input-code" placeholder="Code">
+    </div>
+
+    <br/>
+    <!-- By convention, most nodes have a 'name' property. The following div -->
+    <!-- provides the necessary field. Should always be the last option      -->
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+
+<!-- Next, some simple help text is provided for the node.                   -->
+<script type="text/x-red" data-help-name="e-red function">
+   <!-- data-help-name identifies the node type this help is for             -->
+   <!-- This content appears in the Info sidebar when a node is selected     -->
+   <!-- The first <p> is used as the pop-up tool tip when hovering over a    -->
+   <!-- node in the palette.                                                 -->
+   <p>The Espruino-red Function node runs a javascript function within a
+   Espruino interpreter running on an embedded microcontroller.</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('e-red function',{
+        category: 'e-red',      // the palette category
+        color:    '#fbbc05',
+        defaults: {             // defines the editable properties of the node
+            name: {value:""},   //  along with default values.
+            board: {value:"", required:true},
+            code: {value:"", required:true},
+        },
+        inputs:1,               // set the number of inputs - only 0 or 1
+        outputs:1,              // set the number of outputs - 0 to n
+        // set the icon (held in icons dir below where you save the node)
+        icon: "chip.png",       // saved in  icons/myicon.png
+        label: function() {     // sets the default label contents
+            return this.name||this.topic||"e-red func";
+        },
+        labelStyle: function() { // sets the class to apply to the label
+            return this.name?"node_label_italic":"";
+        }
+    });
+</script>
