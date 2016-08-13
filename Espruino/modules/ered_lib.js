@@ -7,7 +7,7 @@ function func(type, config) {
 
 function blinker(type, config) {
   var node = this;
-  node.pin = parseFloat(config.pin) || 0;
+  node.pin = parseInt(config.pin) || 0;
   LL("Blinker pin", node.pin);
 
   this.callback = function() {

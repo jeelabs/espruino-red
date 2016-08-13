@@ -1,32 +1,18 @@
 // Copyright (c) 2016 Thorsten von Eicken. See the file LICENSE for copying permission.
 
-esp8266 = require("ESP8266");
-wifi = require("Wifi");
 mqtt = require("MQTT").create("h.voneicken.com");
 
-var board = "dev";
-
-var mqLED = D0;     // LED to signal MQTT connection and messages
-var mqTmr;          // Timer for mqLED
-var blinkLED = D12; // LED to play with
+var board = "linux";
 
 // Helpers
 var LL = console.log; // shorter than "console.log"
 // RR rounds v to d digits, useful to display numbers
 function RR(v,d) { var f=Math.pow(10,d); return Math.round(v*f)/f; }
 
-// mqBlink makes the mqLED blink briefly to indicate mqtt activity
-function mqBlink() {
-  mqLED.set();
-  if (mqTmr) clearTimeout(mqTmr);
-  mqTmr = setTimeout(function() { if (mqtt.ready()) mqLED.reset(); mqTmr = 0; }, 100);
-}
-
 //===== mqtt
 
 function mqRecv(msg) {
   //LL("MQTT recv:", msg.topic, msg.message);
-  mqBlink();
   var t = msg.topic.split('/');
   switch (t.shift()) {
     case 'system': break;
@@ -40,19 +26,17 @@ function mqRecv(msg) {
 
 function mqConn() {
   //LL("MQTT...");
-  mqtt.connect(wifi.getHostname()+"-"+getSerial(), 0);
+  mqtt.connect("linux-espruino-red-"+getSerial(), 0);
 }
 
 function mqReady() {
   LL("MQTT connected");
-  mqLED.reset();
   mqtt.subscribe("system/#");
   mqtt.subscribe("e-red/"+board+"/#");
 }
 
 function mqDisc() {
   LL("MQTT disconnected");
-  mqLED.set();
   setTimeout(mqConn, 5000);
 }
 
@@ -60,7 +44,6 @@ function mqPub(t, d) {
   //LL("MQTT send:", t, d);
   if (mqtt.ready()) {
     mqtt.publish(t, d);
-    mqBlink();
   }
 }
 
@@ -159,19 +142,10 @@ function runNode(id, msg) {
 
 //===== main
 
-function onInit() {
-  esp8266.setLog(2); // log to memory and 2:uart0 3:uart1
-  LL("Start...");
-  // load node types
-  types = require('ered_lib');
-  // start mqtt
-  mqtt.on("message", mqRecv);
-  mqtt.on("connected", mqReady);
-  mqtt.on("disconnected", mqDisc);
-  mqConn();
-}
-
-LL(String.fromCharCode(0x1B) +"[?7h");
-LL(process.memory());
-
-onInit();
+// load node types
+types = require('ered_lib');
+// start mqtt
+mqtt.on("message", mqRecv);
+mqtt.on("connected", mqReady);
+mqtt.on("disconnected", mqDisc);
+mqConn();
