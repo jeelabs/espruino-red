@@ -3,6 +3,10 @@ Espruino-Red
 
 __WARNING__ Espruino-red is a prototype, don't expect it to work!
 
+To chat about espruino-red please use
+[![gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jeelabs/espruino-red)
+or the [node-red Google group](https://groups.google.com/forum/#!forum/node-red).
+
 Espruino-red extends the node-red framework to run special nodes directly
 on a microcontroller that runs Espruino (http://www.espruino.com).
 
