@@ -21,8 +21,6 @@ module.exports = function(RED) {
   // require any external libraries we may need....
   var ered = require("./ered");
 
-  const repl = require('repl');
-
   // The main node definition - most things happen in here
   function ERedFunction(n) {
     var node = this;
